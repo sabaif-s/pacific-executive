@@ -12,14 +12,11 @@ function HireTalent() {
   const [refContacts, inViewContacts] = useInView();
 
   return (
-    <div className="w-full relative flex flex-col items-center">
+    <div className="w-full relative flex flex-col top-40 items-center">
       {/* Heading */}
       <div className="my-[30px] w-full flex justify-center items-center">
         <div
-          ref={refHeading}
-          className={`fade-in flex flex-col items-center ${
-            inViewHeading ? "show" : ""
-          }`}
+          className={`flex flex-col items-center`}
         >
           <span className="text-[50px] font-bold">Hire Talent</span>
           <div className="w-[50%] border-b-2 border-[#b1d28a]"></div>
