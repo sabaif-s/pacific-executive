@@ -14,27 +14,33 @@ html {
   box-sizing: inherit;
 }
 
+/* Enhanced for compatibility with Tailwind v3 and v4 */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-   --breakpoint-3xl: 2560px;
+  --breakpoint-3xl: 2560px;
 }
+
+/* Animation utilities - compatible across Tailwind versions */
 @layer utilities {
+  /* Responsive text sizing */
   @media (min-width: 2560px) {
     .text-3xl-custom {
       font-size: 2rem;
     }
   }
+
+  /* Scale in animation */
   @keyframes scale-in {
     0% {
       opacity: 0.5;
-      transform: scale(1);
+      transform: scale(0.8);
     }
     100% {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1);
     }
   }
 
@@ -48,129 +54,179 @@ html {
   @keyframes scale-out {
     0% {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1);
     }
     100% {
-      opacity: 1;
-      transform: scale(1);
+      opacity: 0.5;
+      transform: scale(0.8);
     }
   }
 
   .scale-out {
-    animation: scale-out 0.6s ease-in forwards;
+    opacity: 1;
+    transform: scale(1);
+    animation: scale-out 0.6s ease-out forwards;
   }
 
-  /* Continuous scale/pulse animation */
-  @keyframes scale-pulse {
+  /* Fade in animation - enhanced for better integration compatibility */
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-in 0.8s ease-out forwards;
+  }
+
+  /* Swing slow animation - enhanced for smoother performance */
+  @keyframes swing-slow {
     0%, 100% {
-      transform: scale(1);
+      transform: rotate(-5deg);
     }
     50% {
-      transform: scale(1.05);
+      transform: rotate(5deg);
     }
   }
 
-  .scale-pulse {
-    animation: scale-pulse 2s ease-in-out infinite;
+  .swing-slow {
+    animation: swing-slow 3s ease-in-out infinite;
+    transform-origin: center;
   }
-  /* Fade-in */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-.fade-in.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-@keyframes translate-up {
-  0% {
+
+  /* Additional utility animations for integration */
+  @keyframes translate-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .translate-up {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
+    animation: translate-up 0.6s ease-out forwards;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+
+  /* Typing animation for text effects */
+  @keyframes typing {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  .typing {
+    overflow: hidden;
+    border-right: 2px solid;
+    white-space: nowrap;
+    animation: typing 3s steps(30) forwards;
+  }
+
+  /* Enhanced video controls hiding */
+  .video-no-controls::-webkit-media-controls {
+    display: none !important;
+  }
+  
+  .video-no-controls::-webkit-media-controls-panel {
+    display: none !important;
+  }
+  
+  .video-no-controls::-webkit-media-controls-play-button {
+    display: none !important;
+  }
+  
+  .video-no-controls::-webkit-media-controls-start-playback-button {
+    display: none !important;
+  }
+
+  /* Performance optimization for animations */
+  .animate-optimized {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Enhanced hover states for better UX */
+  .hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
 }
 
-.translate-up {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: translate-up 0.8s ease-out forwards;
-}
-
-/* Text typing effect */
-.typing-text {
-  display: inline-block;
-  border-right: 2px solid #145E8C;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: typing 2s steps(30, end), blink 0.75s step-end infinite;
-}
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-/* Floating icons */
-.float {
-  transform: translateY(0);
-  animation: float 3s ease-in-out infinite alternate;
-}
-@keyframes float {
-  from { transform: translateY(0); }
-  to { transform: translateY(-10px); }
-}
-
-}
-
-video::-webkit-media-controls {
-  display: none !important;
-}
-
-video {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.custom-clip-path {
-  clip-path: circle(70% at 30% 30%);
-}
-
-/* @media (prefers-color-scheme: dark) {
+/* Dark mode support - maintains compatibility */
+@media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-} */
-@keyframes swing {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(3deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(-3deg); }
-  100% { transform: rotate(0deg); }
 }
 
-.swing-slow {
-  animation: swing 6s ease-in-out infinite;
-  transform-origin: center;
-}
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Montserrat', Helvetica, sans-serif;
-  overflow-x: hidden;
+/* Enhanced component base styles */
+.btn-base {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 hover-scale;
 }
 
+/* Button variants with enhanced animations */
+.btn-primary {
+  @apply btn-base bg-blue-600 text-white hover:bg-blue-700;
+}
 
-body, body * {
-  font-family: inherit;
+.btn-secondary {
+  @apply btn-base bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+/* Enhanced form components */
+.input-base {
+  @apply px-4 py-2 border rounded-lg transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+}
+
+/* Loading spinner animation */
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+/* Enhanced grid layouts for better responsive design */
+.grid-responsive {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+@media (min-width: 768px) {
+  .grid-responsive {
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    gap: 3rem;
+  }
 }
