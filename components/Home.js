@@ -46,7 +46,7 @@ const Home = () => {
         playsInline
         className="w-full object-cover"
       >
-        <source src="/video/pacific-video-original.mp4" type="video/mp4" />
+        <source src="/images/pacific-video-original.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       </div>
