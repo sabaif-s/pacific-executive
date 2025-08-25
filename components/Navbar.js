@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MenuOutlined, CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { Input } from "antd";
@@ -21,20 +21,44 @@ const navItems = [
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const handleSearchClick = () => {
-    setSearchButtonClicked(!searchButtonClicked);
-  };
+  const handleSearchClick = () => setSearchButtonClicked(!searchButtonClicked);
+  const handleSearchClose = () => setSearchButtonClicked(false);
 
-  const handleSearchClose = () => {
-    setSearchButtonClicked(false);
-  };
+  // Handle scroll
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 50) {
+        // Scrolling down
+        setScrolled(true);
+      } else {
+        // Scrolling up
+        setScrolled(false);
+      }
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-12 w-full z-1000 bg-white shadow-md">
-      <div className="container mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
+    <header
+      className={`fixed top-12 w-full z-1000 bg-white shadow-md transition-all duration-300 ${
+        scrolled ? "h-24 scale-in" : "h-20 scale-out"
+      }`}
+    >
+      <div className="container mx-auto flex items-center justify-between h-full px-4 lg:px-8">
         {/* Logo */}
-        <div className="relative w-16 h-16 lg:w-20 lg:h-20">
+        <div
+          className={`relative transition-all duration-300 ${
+            scrolled ? "w-12 h-12 lg:w-16 lg:h-16" : "w-16 h-16 lg:w-20 lg:h-20"
+          }`}
+        >
           <Image
             src="/images/squarelogotop.jpg"
             alt="Logo"
@@ -45,7 +69,6 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-0 lg:space-x-10 flex-1 justify-end">
-          {/* Default nav links */}
           <div
             className={`flex items-center space-x-6 xl:space-x-10 transition-all duration-500 ${
               searchButtonClicked
@@ -54,17 +77,21 @@ export default function Navbar() {
             }`}
           >
             {navItems.map((item) => (
-              <Link key={item.name} href={item.href} >
+              <Link key={item.name} href={item.href}>
                 <span
-                  className="text-[#145E8C]  cursor-pointer hover:text-blue-800 transition-colors duration-200"
+                  className="text-[#145E8C] cursor-pointer hover:text-blue-800 transition-colors duration-200"
                   onClick={item.name === "Search" ? handleSearchClick : undefined}
                 >
                   {item.name === "Search" ? (
                     <SearchOutlined className="inline-block text-base text-[#145E8C]" />
                   ) : (
-                   <span className="text-xs text-center  2xl:text-lg 3xl:text-[32px]  xl:text-base" >
+                    <span
+                      className={`text-xs text-center 2xl:text-lg 3xl:text-[32px] xl:text-base transition-all duration-300 ${
+                        scrolled ? "text-sm" : ""
+                      }`}
+                    >
                       {item.name}
-                      </span>
+                    </span>
                   )}
                 </span>
               </Link>
